@@ -8,6 +8,12 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <link rel="stylesheet" href="css/global.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://exwyictcidnidiykpctl.supabase.co'; 
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4d3lpY3RjaWRuaWRpeWtwY3RsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMzcxMzQsImV4cCI6MjA5NTYxMzEzNH0.RshiMbQ35U0waUIxfO-C7OvKGvdwtg0iCcfdkVHq_-8'; 
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+</script>
   <style>
     .hero { padding: 80px 48px 64px; text-align: center; }
     .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: #EBF3FF; color: #1253A4; font-size: 13px; font-weight: 500; padding: 6px 16px; border-radius: 100px; margin-bottom: 28px; border: 1px solid #C7DEFF; }
