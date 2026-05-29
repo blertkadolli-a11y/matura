@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — Matura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #F7FAFF; color: #0F1C2E; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+    .a1{animation:fadeUp .4s ease both} .a2{animation:fadeUp .4s .1s ease both} .a3{animation:fadeUp .4s .2s ease both}
+
+    .topbar { display:flex; justify-content:space-between; align-items:center; padding:14px 26px; background:#1a1a2e; border-bottom:1px solid rgba(255,255,255,.08); }
+    .logo { font-family:'DM Serif Display',serif; font-size:20px; color:#fff; }
+    .logo span { color:#378ADD; }
+    .admin-pill { font-size:11px; background:#185FA5; color:#fff; padding:3px 11px; border-radius:100px; margin-left:9px; font-weight:500; }
+    .topbar-right { display:flex; align-items:center; gap:12px; }
+    .admin-name { font-size:13px; color:rgba(255,255,255,.6); }
+    .avatar { width:32px; height:32px; border-radius:50%; background:#185FA5; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; color:#fff; }
+
+    .layout { display:flex; min-height:calc(100vh - 61px); }
+    .sidebar { width:206px; background:#fff; border-right:1px solid #EEF2F7; padding:16px 0; flex-shrink:0; }
+    .nav-section { font-size:11px; color:#A0AEC0; padding:16px 20px 6px; font-weight:600; letter-spacing:.8px; text-transform:uppercase; }
+    .nav-item { display:flex; align-items:center; gap:10px; padding:10px 20px; font-size:13px; color:#5A6A7E; cursor:pointer; transition:all .2s; text-decoration:none; }
+    .nav-item:hover { color:#185FA5; background:#F0F7FF; }
+    .nav-item.active { color:#185FA5; background:#EBF3FF; font-weight:500; border-right:2px solid #185FA5; }
+    .nav-item i { font-size:16px; }
+    .nav-badge { margin-left:auto; background:#FCEBEB; color:#A32D2D; font-size:11px; padding:2px 8px; border-radius:100px; font-weight:600; }
+
+    .main { flex:1; padding:24px 28px; }
+    .page-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; }
+    .page-title { font-family:'DM Serif Display',serif; font-size:22px; color:#0F1C2E; }
+    .page-sub { font-size:13px; color:#7D8FA3; margin-top:3px; }
+    .btn-add { background:#185FA5; color:#fff; border:none; padding:10px 20px; border-radius:9px; font-size:13px; font-weight:500; cursor:pointer; font-family:'DM Sans',sans-serif; display:flex; align-items:center; gap:7px; transition:all .2s; }
+    .btn-add:hover { background:#0C447C; }
+
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+    .stat { background:#fff; border:1px solid #EEF2F7; border-radius:14px; padding:16px; }
+    .stat-label { font-size:12px; color:#7D8FA3; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+    .stat-label i { font-size:14px; color:#185FA5; }
+    .stat-val { font-family:'DM Serif Display',serif; font-size:26px; color:#0F1C2E; }
+    .stat-sub { font-size:11px; margin-top:3px; }
+    .stat-sub.up { color:#3B6D11; } .stat-sub.warn { color:#633806; }
+
+    .tabs-row { display:flex; border-bottom:1px solid #EEF2F7; margin-bottom:18px; }
+    .tab { font-size:13px; font-weight:500; padding:9px 0; margin-right:22px; cursor:pointer; color:#7D8FA3; border:none; background:none; border-bottom:2px solid transparent; transition:all .2s; font-family:'DM Sans',sans-serif; }
+    .tab.active { color:#185FA5; border-bottom-color:#185FA5; }
+
+    .review-card { background:#fff; border:1px solid #EEF2F7; border-radius:14px; padding:18px; margin-bottom:12px; transition:all .2s; }
+    .review-card:hover { border-color:#C7DEFF; }
+    .review-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+    .q-meta { display:flex; gap:7px; flex-wrap:wrap; }
+    .badge { font-size:11px; padding:3px 10px; border-radius:100px; font-weight:500; }
+    .badge-blue { background:#EBF3FF; color:#0C447C; }
+    .badge-purple { background:#EEEDFE; color:#3C3489; }
+    .badge-amber { background:#FAEEDA; color:#633806; }
+    .badge-green { background:#EAF3DE; color:#27500A; }
+    .review-actions { display:flex; gap:8px; flex-shrink:0; }
+    .btn-approve { background:#EAF3DE; color:#27500A; border:1px solid #B8D98A; padding:6px 14px; border-radius:7px; font-size:12px; font-weight:500; cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif; display:flex; align-items:center; gap:5px; }
+    .btn-approve:hover { background:#B8D98A; }
+    .btn-reject { background:#FCEBEB; color:#A32D2D; border:1px solid #F7C1C1; padding:6px 14px; border-radius:7px; font-size:12px; font-weight:500; cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif; display:flex; align-items:center; gap:5px; }
+    .btn-reject:hover { background:#F7C1C1; }
+    .btn-edit-sm { background:#fff; color:#5A6A7E; border:1px solid #EEF2F7; padding:6px 10px; border-radius:7px; font-size:12px; cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif; }
+    .btn-edit-sm:hover { border-color:#A0AEC0; }
+    .q-text { font-size:14px; color:#0F1C2E; margin-bottom:10px; line-height:1.5; font-weight:500; }
+    .q-opts { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+    .q-opt { font-size:12px; color:#5A6A7E; padding:6px 12px; border-radius:7px; border:1px solid #EEF2F7; background:#FAFAFA; }
+    .q-opt.correct { background:#EAF3DE; border-color:#B8D98A; color:#27500A; font-weight:500; }
+
+    .users-table { background:#fff; border:1px solid #EEF2F7; border-radius:14px; overflow:hidden; }
+    .t-head { display:grid; grid-template-columns:2fr 2fr 1fr 1fr 80px; padding:11px 18px; background:#F7FAFF; border-bottom:1px solid #EEF2F7; font-size:12px; font-weight:600; color:#7D8FA3; }
+    .t-row { display:grid; grid-template-columns:2fr 2fr 1fr 1fr 80px; padding:12px 18px; border-bottom:1px solid #EEF2F7; align-items:center; transition:background .15s; }
+    .t-row:last-child { border-bottom:none; }
+    .t-row:hover { background:#F7FAFF; }
+    .u-name { font-size:13px; font-weight:500; color:#0F1C2E; }
+    .u-email { font-size:12px; color:#7D8FA3; }
+    .s-paid { font-size:11px; font-weight:600; background:#EAF3DE; color:#27500A; padding:3px 10px; border-radius:100px; display:inline-block; }
+    .s-free { font-size:11px; font-weight:600; background:#FAEEDA; color:#633806; padding:3px 10px; border-radius:100px; display:inline-block; }
+
+    .rev-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .rev-card { background:#fff; border:1px solid #EEF2F7; border-radius:14px; padding:20px; }
+    .rev-title { font-size:14px; font-weight:500; color:#0F1C2E; margin-bottom:16px; }
+    .rev-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #EEF2F7; font-size:13px; }
+    .rev-row:last-child { border-bottom:none; }
+    .rev-label { color:#5A6A7E; }
+    .rev-val { font-weight:600; color:#0F1C2E; }
+    .rev-val.green { color:#3B6D11; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div style="display:flex;align-items:center">
+      <div class="logo">matura<span>.</span></div>
+      <span class="admin-pill">Admin</span>
+    </div>
+    <div class="topbar-right">
+      <div class="admin-name">Blert (Admin)</div>
+      <div class="avatar">B</div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <div class="nav-section">Paneli</div>
+      <a href="admin.html" class="nav-item active"><i class="ti ti-layout-dashboard"></i> Ballina</a>
+      <a href="#" class="nav-item"><i class="ti ti-users"></i> Përdoruesit</a>
+      <a href="#" class="nav-item"><i class="ti ti-coin-euro"></i> Të ardhurat</a>
+      <div class="nav-section">Pyetjet</div>
+      <a href="#" class="nav-item"><i class="ti ti-brain"></i> Rishiko AI <span class="nav-badge">8</span></a>
+      <a href="#" class="nav-item"><i class="ti ti-database"></i> Banka e pyetjeve</a>
+      <a href="#" class="nav-item"><i class="ti ti-plus"></i> Shto pyetje</a>
+      <div class="nav-section">Sistemi</div>
+      <a href="#" class="nav-item"><i class="ti ti-toggle-right"></i> Kontrollet</a>
+      <a href="#" class="nav-item"><i class="ti ti-settings"></i> Cilësimet</a>
+    </div>
+
+    <div class="main">
+      <div class="page-head a1">
+        <div>
+          <div class="page-title">Admin Dashboard</div>
+          <div class="page-sub">Pasqyra e plotë e platformës</div>
+        </div>
+        <button class="btn-add"><i class="ti ti-plus"></i> Shto pyetje</button>
+      </div>
+
+      <div class="stats-grid a2">
+        <div class="stat"><div class="stat-label"><i class="ti ti-users"></i> Studentë</div><div class="stat-val">1,248</div><div class="stat-sub up">+34 këtë javë</div></div>
+        <div class="stat"><div class="stat-label"><i class="ti ti-credit-card"></i> Pagesa</div><div class="stat-val">876</div><div class="stat-sub up">€4,380 totale</div></div>
+        <div class="stat"><div class="stat-label"><i class="ti ti-file-text"></i> Pyetje</div><div class="stat-val">1,024</div><div class="stat-sub up">+12 këtë javë</div></div>
+        <div class="stat"><div class="stat-label"><i class="ti ti-brain"></i> Për rishikim</div><div class="stat-val">8</div><div class="stat-sub warn">Duhen aprovuar</div></div>
+      </div>
+
+      <div class="a3">
+        <div class="tabs-row">
+          <button class="tab active" onclick="showTab('q')">Rishiko pyetjet AI (8)</button>
+          <button class="tab" onclick="showTab('u')">Përdoruesit</button>
+          <button class="tab" onclick="showTab('r')">Të ardhurat</button>
+        </div>
+
+        <div id="sec-q">
+          <div class="review-card" id="rc1">
+            <div class="review-head">
+              <div class="q-meta"><span class="badge badge-blue">Matematikë</span><span class="badge badge-purple">AI</span><span class="badge badge-amber">Algjebër</span><span class="badge badge-green">Mesatar</span></div>
+              <div class="review-actions">
+                <button class="btn-edit-sm"><i class="ti ti-edit"></i></button>
+                <button class="btn-reject" onclick="removeCard('rc1')"><i class="ti ti-x"></i> Refuzo</button>
+                <button class="btn-approve" onclick="removeCard('rc1')"><i class="ti ti-check"></i> Aprovo</button>
+              </div>
+            </div>
+            <div class="q-text">Nëse f(x) = 2x² + 3x − 5, gjeni vlerën e f(2).</div>
+            <div class="q-opts"><div class="q-opt correct">A. 9 ✓</div><div class="q-opt">B. 11</div><div class="q-opt">C. 7</div><div class="q-opt">D. 5</div></div>
+          </div>
+          <div class="review-card" id="rc2">
+            <div class="review-head">
+              <div class="q-meta"><span class="badge badge-blue">Anglisht</span><span class="badge badge-purple">AI</span><span class="badge badge-amber">Grammar</span><span class="badge badge-green">Lehtë</span></div>
+              <div class="review-actions">
+                <button class="btn-edit-sm"><i class="ti ti-edit"></i></button>
+                <button class="btn-reject" onclick="removeCard('rc2')"><i class="ti ti-x"></i> Refuzo</button>
+                <button class="btn-approve" onclick="removeCard('rc2')"><i class="ti ti-check"></i> Aprovo</button>
+              </div>
+            </div>
+            <div class="q-text">Choose the correct form: "She ___ to school every day."</div>
+            <div class="q-opts"><div class="q-opt correct">A. goes ✓</div><div class="q-opt">B. go</div><div class="q-opt">C. going</div><div class="q-opt">D. gone</div></div>
+          </div>
+          <div class="review-card" id="rc3">
+            <div class="review-head">
+              <div class="q-meta"><span class="badge badge-blue">Shqipe</span><span class="badge badge-purple">AI</span><span class="badge badge-amber">Gramatikë</span><span class="badge badge-amber">Vështirë</span></div>
+              <div class="review-actions">
+                <button class="btn-edit-sm"><i class="ti ti-edit"></i></button>
+                <button class="btn-reject" onclick="removeCard('rc3')"><i class="ti ti-x"></i> Refuzo</button>
+                <button class="btn-approve" onclick="removeCard('rc3')"><i class="ti ti-check"></i> Aprovo</button>
+              </div>
+            </div>
+            <div class="q-text">Cila fjali ka përdorimin e saktë të lidhëzës bashkërenditëse?</div>
+            <div class="q-opts"><div class="q-opt correct">A. Erdha dhe pashë ✓</div><div class="q-opt">B. Erdha por pashë</div><div class="q-opt">C. Erdha megjithëse pashë</div><div class="q-opt">D. Erdha nëse pashë</div></div>
+          </div>
+        </div>
+
+        <div id="sec-u" style="display:none">
+          <div class="users-table">
+            <div class="t-head"><div>Studenti</div><div>Email</div><div>Statusi</div><div>Data</div><div></div></div>
+            <div class="t-row"><div><div class="u-name">Arta Krasniqi</div></div><div><div class="u-email">arta@gmail.com</div></div><div><span class="s-paid">Paguar</span></div><div style="font-size:12px;color:#7D8FA3">28 Maj 2025</div><div><button class="btn-edit-sm">Shiko</button></div></div>
+            <div class="t-row"><div><div class="u-name">Blend Osmani</div></div><div><div class="u-email">blend@hotmail.com</div></div><div><span class="s-paid">Paguar</span></div><div style="font-size:12px;color:#7D8FA3">27 Maj 2025</div><div><button class="btn-edit-sm">Shiko</button></div></div>
+            <div class="t-row"><div><div class="u-name">Sara Hoxha</div></div><div><div class="u-email">sara@gmail.com</div></div><div><span class="s-free">Falas</span></div><div style="font-size:12px;color:#7D8FA3">27 Maj 2025</div><div><button class="btn-edit-sm">Shiko</button></div></div>
+            <div class="t-row"><div><div class="u-name">Driton Berisha</div></div><div><div class="u-email">driton@yahoo.com</div></div><div><span class="s-paid">Paguar</span></div><div style="font-size:12px;color:#7D8FA3">26 Maj 2025</div><div><button class="btn-edit-sm">Shiko</button></div></div>
+            <div class="t-row"><div><div class="u-name">Fjolla Gashi</div></div><div><div class="u-email">fjolla@gmail.com</div></div><div><span class="s-free">Falas</span></div><div style="font-size:12px;color:#7D8FA3">25 Maj 2025</div><div><button class="btn-edit-sm">Shiko</button></div></div>
+          </div>
+        </div>
+
+        <div id="sec-r" style="display:none">
+          <div class="rev-grid">
+            <div class="rev-card">
+              <div class="rev-title">Të ardhurat</div>
+              <div class="rev-row"><span class="rev-label">Sot</span><span class="rev-val green">€85</span></div>
+              <div class="rev-row"><span class="rev-label">Kjo javë</span><span class="rev-val green">€340</span></div>
+              <div class="rev-row"><span class="rev-label">Ky muaj</span><span class="rev-val green">€1,245</span></div>
+              <div class="rev-row"><span class="rev-label">Totale</span><span class="rev-val green">€4,380</span></div>
+              <div class="rev-row"><span class="rev-label">Studentë paguar</span><span class="rev-val">876</span></div>
+              <div class="rev-row"><span class="rev-label">Studentë falas</span><span class="rev-val">372</span></div>
+            </div>
+            <div class="rev-card">
+              <div class="rev-title">Testet sipas lëndës</div>
+              <div class="rev-row"><span class="rev-label">Matematikë</span><span class="rev-val">4,821</span></div>
+              <div class="rev-row"><span class="rev-label">Anglisht</span><span class="rev-val">4,103</span></div>
+              <div class="rev-row"><span class="rev-label">Shqipe</span><span class="rev-val">3,562</span></div>
+              <div class="rev-row"><span class="rev-label">Me zgjedhje</span><span class="rev-val">2,041</span></div>
+              <div class="rev-row"><span class="rev-label">Total</span><span class="rev-val">14,527</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showTab(t) {
+      ['q','u','r'].forEach(id => {
+        document.getElementById('sec-'+id).style.display = id === t ? 'block' : 'none';
+      });
+      document.querySelectorAll('.tab').forEach((tab, i) => {
+        tab.classList.toggle('active', ['q','u','r'][i] === t);
+      });
+    }
+    function removeCard(id) {
+      const card = document.getElementById(id);
+      card.style.transition = 'all .3s ease';
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(-8px)';
+      setTimeout(() => card.remove(), 300);
+    }
+  </script>
+</body>
+</html>
