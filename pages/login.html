@@ -149,19 +149,78 @@
     </div>
   </div>
 
-  <script>
-    const tabs = document.querySelectorAll('.tab');
-    function switchTab(tab) {
-      tabs.forEach((t, i) => t.classList.toggle('active', (i === 0 && tab === 'register') || (i === 1 && tab === 'login')));
-      document.getElementById('form-register').classList.toggle('active', tab === 'register');
-      document.getElementById('form-login').classList.toggle('active', tab === 'login');
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // Supabase setup
+  const supabase = window.supabase.createClient(
+    'https://exwyictcidnidiykpctl.supabase.co',  // vendos URL-në tënde
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4d3lpY3RjaWRuaWRpeWtwY3RsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMzcxMzQsImV4cCI6MjA5NTYxMzEzNH0.RshiMbQ35U0waUIxfO-C7OvKGvdwtg0iCcfdkVHq_-8'                 // vendos key-in tënd
+  );
+
+  // Tabs
+  const tabs = document.querySelectorAll('.tab');
+  function switchTab(tab) {
+    tabs.forEach((t, i) => t.classList.toggle('active', (i === 0 && tab === 'register') || (i === 1 && tab === 'login')));
+    document.getElementById('form-register').classList.toggle('active', tab === 'register');
+    document.getElementById('form-login').classList.toggle('active', tab === 'login');
+  }
+
+  function togglePass(id, icon) {
+    const input = document.getElementById(id);
+    input.type = input.type === 'password' ? 'text' : 'password';
+    icon.classList.toggle('ti-eye');
+    icon.classList.toggle('ti-eye-off');
+  }
+
+  // Register
+  document.querySelector('#form-register .btn-submit').addEventListener('click', async () => {
+    const name = document.querySelector('#form-register input[type="text"]').value;
+    const email = document.querySelector('#form-register input[type="email"]').value;
+    const password = document.getElementById('reg-pass').value;
+
+    if (!name || !email || !password) {
+      alert('Plotëso të gjitha fushat!');
+      return;
     }
-    function togglePass(id, icon) {
-      const input = document.getElementById(id);
-      input.type = input.type === 'password' ? 'text' : 'password';
-      icon.classList.toggle('ti-eye');
-      icon.classList.toggle('ti-eye-off');
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: name } }
+    });
+
+    if (error) {
+      alert('Gabim: ' + error.message);
+    } else {
+      // Krijo profilin
+      await supabase.from('profiles').insert({
+        id: data.user.id,
+        full_name: name,
+        has_paid: false
+      });
+      alert('Llogaria u krijua! Kontrollo emailin për konfirmim.');
+      window.location.href = 'dashboard.html';
     }
-  </script>
+  });
+
+  // Login
+  document.querySelector('#form-login .btn-submit').addEventListener('click', async () => {
+    const email = document.querySelector('#form-login input[type="email"]').value;
+    const password = document.getElementById('log-pass').value;
+
+    if (!email || !password) {
+      alert('Plotëso të gjitha fushat!');
+      return;
+    }
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      alert('Email ose fjalëkalim i gabuar!');
+    } else {
+      window.location.href = 'dashboard.html';
+    }
+  });
+</script>
 </body>
 </html>
