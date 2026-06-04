@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rezultatet — Matura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <style>
+    body { background: #F7FAFF; }
+    @keyframes scoreAnim { from{opacity:0;transform:scale(.7)} to{opacity:1;transform:scale(1)} }
+    .body { padding: 32px; max-width: 740px; margin: 0 auto; }
+    .result-hero { background: #fff; border: 1px solid #EEF2F7; border-radius: 18px; padding: 36px; text-align: center; margin-bottom: 20px; }
+    .score-ring { width: 110px; height: 110px; border-radius: 50%; border: 5px solid #185FA5; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: scoreAnim .6s .2s ease both; opacity: 0; }
+    .score-num { font-family: 'DM Serif Display', serif; font-size: 32px; color: #185FA5; }
+    .score-den { font-size: 14px; color: #A0AEC0; }
+    .result-title { font-family: 'DM Serif Display', serif; font-size: 24px; color: #0F1C2E; margin-bottom: 7px; }
+    .result-sub { font-size: 14px; color: #7D8FA3; margin-bottom: 22px; }
+    .result-badge { display: inline-flex; align-items: center; gap: 7px; background: #EAF3DE; color: #27500A; font-size: 13px; font-weight: 500; padding: 7px 18px; border-radius: 100px; border: 1px solid #B8D98A; }
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 20px; }
+    .stat { background: #fff; border: 1px solid #EEF2F7; border-radius: 14px; padding: 18px; text-align: center; }
+    .stat-n { font-family: 'DM Serif Display', serif; font-size: 26px; margin-bottom: 4px; }
+    .stat-n.green { color: #3B6D11; } .stat-n.red { color: #A32D2D; } .stat-n.amber { color: #854F0B; } .stat-n.blue { color: #185FA5; }
+    .stat-l { font-size: 12px; color: #7D8FA3; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 16px; }
+    .card-title { font-size: 15px; font-weight: 500; color: #0F1C2E; margin-bottom: 18px; }
+    .subj-row { display: flex; align-items: center; gap: 10px; margin-bottom: 13px; }
+    .subj-row:last-child { margin-bottom: 0; }
+    .subj-name { font-size: 13px; color: #0F1C2E; width: 85px; flex-shrink: 0; }
+    .prog-pct { font-size: 12px; color: #7D8FA3; width: 34px; text-align: right; flex-shrink: 0; }
+    .q-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 9px; border: 1px solid transparent; margin-bottom: 7px; }
+    .q-item.correct { background: #EAF3DE; border-color: #B8D98A; }
+    .q-item.wrong { background: #FCEBEB; border-color: #F7C1C1; }
+    .q-item.skipped { background: #FAEEDA; border-color: #F4C175; }
+    .q-num { font-size: 12px; font-weight: 600; width: 22px; color: #7D8FA3; flex-shrink: 0; }
+    .q-short { font-size: 13px; color: #0F1C2E; flex: 1; }
+    .q-status { font-size: 12px; font-weight: 500; }
+    .q-status.c { color: #27500A; } .q-status.w { color: #A32D2D; } .q-status.s { color: #633806; }
+    .weak-banner { background: #EBF3FF; border: 1px solid #C7DEFF; border-radius: 14px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .weak-title { font-size: 15px; font-weight: 500; color: #0C447C; margin-bottom: 4px; }
+    .weak-sub { font-size: 13px; color: #185FA5; }
+    .actions-row { display: flex; gap: 14px; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="dashboard.html" class="topbar-logo">matura<span>.</span></a>
+    <a href="dashboard.html" class="btn-ghost" style="font-size:13px"><i class="ti ti-arrow-left"></i> Kthehu te dashboard</a>
+  </div>
+
+  <div class="body">
+    <div class="result-hero animate">
+      <div class="score-ring"><div><div class="score-num">82</div><div class="score-den">nga 100</div></div></div>
+      <div class="result-title">Punë e mirë!</div>
+      <div class="result-sub">Test Matematike · 25 pyetje · 28:12 minuta</div>
+      <div class="result-badge"><i class="ti ti-trophy"></i> Rezultat i lartë — mbi mesataren</div>
+    </div>
+
+    <div class="stats-row animate-2">
+      <div class="stat"><div class="stat-n green">20</div><div class="stat-l">Saktë</div></div>
+      <div class="stat"><div class="stat-n red">3</div><div class="stat-l">Gabim</div></div>
+      <div class="stat"><div class="stat-n amber">2</div><div class="stat-l">Kaluar</div></div>
+      <div class="stat"><div class="stat-n blue">28:12</div><div class="stat-l">Kohë</div></div>
+    </div>
+
+    <div class="row animate-3">
+      <div class="card">
+        <div class="card-title">Rezultati sipas temës</div>
+        <div class="subj-row"><div class="subj-name">Algjebër</div><div class="prog-track"><div class="prog-fill" style="width:90%;background:#185FA5"></div></div><div class="prog-pct">90%</div></div>
+        <div class="subj-row"><div class="subj-name">Gjeometri</div><div class="prog-track"><div class="prog-fill" style="width:70%;background:#185FA5"></div></div><div class="prog-pct">70%</div></div>
+        <div class="subj-row"><div class="subj-name">Statistikë</div><div class="prog-track"><div class="prog-fill" style="width:80%;background:#185FA5"></div></div><div class="prog-pct">80%</div></div>
+        <div class="subj-row"><div class="subj-name">Funksionet</div><div class="prog-track"><div class="prog-fill" style="width:60%;background:#EF9F27"></div></div><div class="prog-pct">60%</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Rishiko pyetjet</div>
+        <div class="q-item correct"><div class="q-num">Q1</div><div class="q-short">x² − 5x + 6 = 0</div><div class="q-status c"><i class="ti ti-check"></i> Saktë</div></div>
+        <div class="q-item correct"><div class="q-num">Q2</div><div class="q-short">Perimetri i rrethit</div><div class="q-status c"><i class="ti ti-check"></i> Saktë</div></div>
+        <div class="q-item wrong"><div class="q-num">Q3</div><div class="q-short">Derivati i sin(x)</div><div class="q-status w"><i class="ti ti-x"></i> Gabim</div></div>
+        <div class="q-item skipped"><div class="q-num">Q4</div><div class="q-short">Teorema e Pitagorës</div><div class="q-status s"><i class="ti ti-minus"></i> Kaluar</div></div>
+        <div class="q-item correct"><div class="q-num">Q5</div><div class="q-short">Logaritmi natyror</div><div class="q-status c"><i class="ti ti-check"></i> Saktë</div></div>
+      </div>
+    </div>
+
+    <div class="weak-banner animate-4">
+      <div><div class="weak-title">Pika e dobët — Funksionet</div><div class="weak-sub">Ke 60% në këtë temë. Rekomandojmë të praktikosh më shumë.</div></div>
+      <a href="test.html" class="btn-primary"><i class="ti ti-bolt"></i> Praktiko tani</a>
+    </div>
+
+    <div class="actions-row animate-4">
+      <a href="test.html" class="btn-outline"><i class="ti ti-refresh"></i> Bëje sërish</a>
+      <a href="test.html" class="btn-primary"><i class="ti ti-arrow-right"></i> Test i ri — Matematikë</a>
+    </div>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script>auth.requireAuth();</script>
+</body>
+</html>
