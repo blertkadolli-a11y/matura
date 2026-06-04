@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="sq">
 <head>
-  <meta charset="UTF-8">:<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Regjistrohu — Matura</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,16 +11,11 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'DM Sans', sans-serif; background: #F7FAFF; min-height: 100vh; display: flex; flex-direction: column; }
     @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-    @keyframes slideLeft { from{opacity:0;transform:translateX(16px)} to{opacity:1;transform:translateX(0)} }
-    @keyframes slideRight { from{opacity:0;transform:translateX(-16px)} to{opacity:1;transform:translateX(0)} }
-
     .topbar { padding: 18px 48px; background: #fff; border-bottom: 1px solid #EEF2F7; }
     .logo { font-family: 'DM Serif Display', serif; font-size: 22px; color: #185FA5; text-decoration: none; }
     .logo span { color: #378ADD; }
-
     .page { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 24px; }
     .card { display: flex; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(24,95,165,.12); max-width: 860px; width: 100%; animation: fadeUp .5s ease both; }
-
     .left { width: 42%; background: #185FA5; padding: 48px 40px; display: flex; flex-direction: column; justify-content: space-between; }
     .left-logo { font-family: 'DM Serif Display', serif; font-size: 26px; color: #fff; }
     .left-logo span { color: #B5D4F4; }
@@ -31,13 +26,12 @@
     .feat-icon { width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,.15); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; flex-shrink: 0; }
     .feat-text { font-size: 13px; color: #E6F1FB; line-height: 1.5; }
     .left-footer { font-size: 12px; color: rgba(255,255,255,.4); }
-
     .right { flex: 1; background: #fff; padding: 48px 44px; display: flex; flex-direction: column; justify-content: center; }
     .tabs { display: flex; border-bottom: 1px solid #EEF2F7; margin-bottom: 32px; }
     .tab { font-size: 15px; font-weight: 500; padding: 0 0 14px; margin-right: 24px; cursor: pointer; color: #7D8FA3; border: none; background: none; border-bottom: 2px solid transparent; transition: all .25s; font-family: 'DM Sans', sans-serif; }
     .tab.active { color: #185FA5; border-bottom-color: #185FA5; }
-    .form { display: none; }
-    .form.active { display: block; animation: slideLeft .35s ease both; }
+    .form-section { display: none; }
+    .form-section.active { display: block; }
     .form-group { margin-bottom: 18px; }
     .form-label { font-size: 13px; color: #4A5568; margin-bottom: 7px; display: block; font-weight: 500; }
     .input-wrap { position: relative; }
@@ -47,18 +41,19 @@
     .input-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: #A0AEC0; font-size: 17px; pointer-events: none; }
     .eye-icon { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: #A0AEC0; font-size: 17px; cursor: pointer; }
     .btn-submit { width: 100%; background: #185FA5; color: #fff; border: none; padding: 13px; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; transition: all .25s; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px; }
-    .btn-submit:hover { background: #0C447C; transform: translateY(-1px); }
+    .btn-submit:hover { background: #0C447C; }
+    .btn-submit:disabled { background: #B5D4F4; cursor: not-allowed; }
     .divider-or { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: #A0AEC0; font-size: 13px; }
     .divider-or::before, .divider-or::after { content: ''; flex: 1; height: 1px; background: #EEF2F7; }
-    .btn-google { width: 100%; background: #fff; color: #0F1C2E; border: 1px solid #E2E8F0; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all .2s; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .btn-google:hover { background: #F7FAFF; border-color: #C7DEFF; }
     .switch-text { font-size: 13px; color: #7D8FA3; text-align: center; margin-top: 22px; }
     .switch-link { color: #185FA5; cursor: pointer; font-weight: 500; }
     .switch-link:hover { text-decoration: underline; }
     .forgot { font-size: 12px; color: #185FA5; cursor: pointer; text-align: right; margin-top: 5px; display: block; }
-    .forgot:hover { text-decoration: underline; }
     .terms { font-size: 12px; color: #A0AEC0; text-align: center; margin-top: 18px; line-height: 1.6; }
     .terms a { color: #185FA5; text-decoration: none; }
+    .alert { padding: 12px 16px; border-radius: 9px; font-size: 13px; margin-bottom: 16px; display: none; }
+    .alert-error { background: #FCEBEB; color: #A32D2D; border: 1px solid #F7C1C1; }
+    .alert-success { background: #EAF3DE; color: #27500A; border: 1px solid #B8D98A; }
   </style>
 </head>
 <body>
@@ -83,49 +78,50 @@
 
       <div class="right">
         <div class="tabs">
-          <button class="tab active" onclick="switchTab('register')">Regjistrohu</button>
-          <button class="tab" onclick="switchTab('login')">Hyr</button>
+          <button class="tab active" id="tab-reg" onclick="switchTab('register')">Regjistrohu</button>
+          <button class="tab" id="tab-log" onclick="switchTab('login')">Hyr</button>
         </div>
 
-        <div class="form active" id="form-register">
+        <!-- REGISTER -->
+        <div class="form-section active" id="form-register">
+          <div id="reg-alert" class="alert"></div>
           <div class="form-group">
             <label class="form-label">Emri i plotë</label>
             <div class="input-wrap">
               <i class="ti ti-user input-icon"></i>
-              <input type="text" class="form-input" placeholder="p.sh. Arta Krasniqi">
+              <input type="text" class="form-input" id="reg-name" placeholder="p.sh. Arta Krasniqi">
             </div>
           </div>
           <div class="form-group">
             <label class="form-label">Email</label>
             <div class="input-wrap">
               <i class="ti ti-mail input-icon"></i>
-              <input type="email" class="form-input" placeholder="arta@email.com">
+              <input type="email" class="form-input" id="reg-email" placeholder="arta@email.com">
             </div>
           </div>
           <div class="form-group">
             <label class="form-label">Fjalëkalimi</label>
             <div class="input-wrap">
               <i class="ti ti-lock input-icon"></i>
-              <input type="password" class="form-input" id="reg-pass" placeholder="Minimum 8 karaktere">
+              <input type="password" class="form-input" id="reg-pass" placeholder="Minimum 6 karaktere">
               <i class="ti ti-eye eye-icon" onclick="togglePass('reg-pass', this)"></i>
             </div>
           </div>
-          <button class="btn-submit"><i class="ti ti-arrow-right"></i> Krijo llogarinë</button>
-          <div class="divider-or">ose</div>
-          <button class="btn-google">
-            <svg width="17" height="17" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-            Vazhdo me Google
+          <button class="btn-submit" id="reg-btn" onclick="doRegister()">
+            <i class="ti ti-arrow-right"></i> Krijo llogarinë
           </button>
           <div class="terms">Duke u regjistruar pranon <a href="#">Kushtet</a> dhe <a href="#">Privatësinë</a></div>
           <div class="switch-text">Ke llogari? <span class="switch-link" onclick="switchTab('login')">Hyr këtu</span></div>
         </div>
 
-        <div class="form" id="form-login">
+        <!-- LOGIN -->
+        <div class="form-section" id="form-login">
+          <div id="log-alert" class="alert"></div>
           <div class="form-group">
             <label class="form-label">Email</label>
             <div class="input-wrap">
               <i class="ti ti-mail input-icon"></i>
-              <input type="email" class="form-input" placeholder="arta@email.com">
+              <input type="email" class="form-input" id="log-email" placeholder="arta@email.com">
             </div>
           </div>
           <div class="form-group">
@@ -135,13 +131,10 @@
               <input type="password" class="form-input" id="log-pass" placeholder="Fjalëkalimi yt">
               <i class="ti ti-eye eye-icon" onclick="togglePass('log-pass', this)"></i>
             </div>
-            <a class="forgot">Ke harruar fjalëkalimin?</a>
+            <span class="forgot">Ke harruar fjalëkalimin?</span>
           </div>
-          <button class="btn-submit"><i class="ti ti-login"></i> Hyr në llogari</button>
-          <div class="divider-or">ose</div>
-          <button class="btn-google">
-            <svg width="17" height="17" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-            Vazhdo me Google
+          <button class="btn-submit" id="log-btn" onclick="doLogin()">
+            <i class="ti ti-login"></i> Hyr në llogari
           </button>
           <div class="switch-text">Nuk ke llogari? <span class="switch-link" onclick="switchTab('register')">Regjistrohu falas</span></div>
         </div>
@@ -149,78 +142,137 @@
     </div>
   </div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script>
-  // Supabase setup
-  const supabase = window.supabase.createClient(
-    'https://exwyictcidnidiykpctl.supabase.co',  // vendos URL-në tënde
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4d3lpY3RjaWRuaWRpeWtwY3RsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMzcxMzQsImV4cCI6MjA5NTYxMzEzNH0.RshiMbQ35U0waUIxfO-C7OvKGvdwtg0iCcfdkVHq_-8'                 // vendos key-in tënd
-  );
+  <script>
+    // ========== CONFIG ==========
+    const SUPA_URL = 'https://exwyictcidnidiykpctl.supabase.co';
+    const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4d3lpY3RjaWRuaWRpeWtwY3RsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgzNTYwNTIsImV4cCI6MjA2MzkzMjA1Mn0.RshiMbQ35U0waUIxf0-C7OvKGvdwtg0iCcfdkVHq_-8';
 
-  // Tabs
-  const tabs = document.querySelectorAll('.tab');
-  function switchTab(tab) {
-    tabs.forEach((t, i) => t.classList.toggle('active', (i === 0 && tab === 'register') || (i === 1 && tab === 'login')));
-    document.getElementById('form-register').classList.toggle('active', tab === 'register');
-    document.getElementById('form-login').classList.toggle('active', tab === 'login');
-  }
-
-  function togglePass(id, icon) {
-    const input = document.getElementById(id);
-    input.type = input.type === 'password' ? 'text' : 'password';
-    icon.classList.toggle('ti-eye');
-    icon.classList.toggle('ti-eye-off');
-  }
-
-  // Register
-  document.querySelector('#form-register .btn-submit').addEventListener('click', async () => {
-    const name = document.querySelector('#form-register input[type="text"]').value;
-    const email = document.querySelector('#form-register input[type="email"]').value;
-    const password = document.getElementById('reg-pass').value;
-
-    if (!name || !email || !password) {
-      alert('Plotëso të gjitha fushat!');
-      return;
-    }
-
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { full_name: name } }
-    });
-
-    if (error) {
-      alert('Gabim: ' + error.message);
-    } else {
-      // Krijo profilin
-      await supabase.from('profiles').insert({
-        id: data.user.id,
-        full_name: name,
-        has_paid: false
+    // ========== SUPABASE CALLS ==========
+    async function supaRequest(endpoint, method, body, token) {
+      const headers = {
+        'Content-Type': 'application/json',
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + (token || SUPA_KEY)
+      };
+      const res = await fetch(SUPA_URL + endpoint, {
+        method: method || 'GET',
+        headers,
+        body: body ? JSON.stringify(body) : undefined
       });
-      alert('Llogaria u krijua! Kontrollo emailin për konfirmim.');
-      window.location.href = 'dashboard.html';
-    }
-  });
-
-  // Login
-  document.querySelector('#form-login .btn-submit').addEventListener('click', async () => {
-    const email = document.querySelector('#form-login input[type="email"]').value;
-    const password = document.getElementById('log-pass').value;
-
-    if (!email || !password) {
-      alert('Plotëso të gjitha fushat!');
-      return;
+      return res.json();
     }
 
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-    if (error) {
-      alert('Email ose fjalëkalim i gabuar!');
-    } else {
-      window.location.href = 'dashboard.html';
+    async function signUp(email, password, name) {
+      const res = await fetch(SUPA_URL + '/auth/v1/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPA_KEY
+        },
+        body: JSON.stringify({ email, password, data: { full_name: name } })
+      });
+      return res.json();
     }
-  });
-</script>
+
+    async function signIn(email, password) {
+      const res = await fetch(SUPA_URL + '/auth/v1/token?grant_type=password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPA_KEY
+        },
+        body: JSON.stringify({ email, password })
+      });
+      return res.json();
+    }
+
+    // ========== UI ==========
+    function switchTab(tab) {
+      document.getElementById('form-register').classList.toggle('active', tab === 'register');
+      document.getElementById('form-login').classList.toggle('active', tab === 'login');
+      document.getElementById('tab-reg').classList.toggle('active', tab === 'register');
+      document.getElementById('tab-log').classList.toggle('active', tab === 'login');
+    }
+
+    function togglePass(id, icon) {
+      const input = document.getElementById(id);
+      input.type = input.type === 'password' ? 'text' : 'password';
+      icon.classList.toggle('ti-eye');
+      icon.classList.toggle('ti-eye-off');
+    }
+
+    function showAlert(id, msg, type) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.className = 'alert alert-' + type;
+      el.style.display = 'block';
+    }
+
+    function setLoading(btnId, loading) {
+      const btn = document.getElementById(btnId);
+      btn.disabled = loading;
+      btn.innerHTML = loading
+        ? '<i class="ti ti-loader"></i> Duke pritur...'
+        : btnId === 'reg-btn'
+          ? '<i class="ti ti-arrow-right"></i> Krijo llogarinë'
+          : '<i class="ti ti-login"></i> Hyr në llogari';
+    }
+
+    // ========== REGISTER ==========
+    async function doRegister() {
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const pass = document.getElementById('reg-pass').value;
+
+      if (!name || !email || !pass) {
+        showAlert('reg-alert', 'Plotëso të gjitha fushat!', 'error');
+        return;
+      }
+      if (pass.length < 6) {
+        showAlert('reg-alert', 'Fjalëkalimi duhet të ketë minimum 6 karaktere!', 'error');
+        return;
+      }
+
+      setLoading('reg-btn', true);
+      try {
+        const data = await signUp(email, pass, name);
+        if (data.error || data.msg) {
+          showAlert('reg-alert', data.error?.message || data.msg || 'Gabim gjatë regjistrimit!', 'error');
+        } else {
+          showAlert('reg-alert', 'Llogaria u krijua! Kontrollo emailin për konfirmim.', 'success');
+          setTimeout(() => { window.location.href = 'dashboard.html'; }, 2000);
+        }
+      } catch (e) {
+        showAlert('reg-alert', 'Gabim lidhjeje. Provo sërish!', 'error');
+      }
+      setLoading('reg-btn', false);
+    }
+
+    // ========== LOGIN ==========
+    async function doLogin() {
+      const email = document.getElementById('log-email').value.trim();
+      const pass = document.getElementById('log-pass').value;
+
+      if (!email || !pass) {
+        showAlert('log-alert', 'Plotëso të gjitha fushat!', 'error');
+        return;
+      }
+
+      setLoading('log-btn', true);
+      try {
+        const data = await signIn(email, pass);
+        if (data.error || data.error_description) {
+          showAlert('log-alert', 'Email ose fjalëkalim i gabuar!', 'error');
+        } else {
+          localStorage.setItem('matura_token', data.access_token);
+          localStorage.setItem('matura_user', JSON.stringify(data.user));
+          window.location.href = 'dashboard.html';
+        }
+      } catch (e) {
+        showAlert('log-alert', 'Gabim lidhjeje. Provo sërish!', 'error');
+      }
+      setLoading('log-btn', false);
+    }
+  </script>
 </body>
 </html>
